@@ -2,159 +2,113 @@
 <html lang="de">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Mentimeter</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menti Demo</title>
     <style>
         :root {
             --menti-blue: #1261fe;
-            --text-main: #222222;
-            --text-muted: #666666;
-            --border-light: #dcdcdc;
+            --menti-bg: #f2f5f7;
+            --text-color: #2b3238;
+            --border-color: #d5dce0;
         }
 
         body {
-            font-family: 'Inter', sans-serif;
-            background-color: #ffffff;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            background-color: #0b1435;
             margin: 0;
-            padding: 0;
-            color: var(--text-main);
-            display: flex;
-            justify-content: center;
-        }
-
-        .container {
-            width: 100%;
-            max-width: 450px; /* Perfekt für mobile Bildschirme */
-            padding: 30px 24px;
-            box-sizing: border-box;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
-
-        /* Originalgetreues Mentimeter Logo */
-        .logo-container {
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 8px;
-            margin-bottom: 40px;
+            min-height: 100vh;
         }
 
-        .logo-bars {
+        .phone-mockup {
+            background: white;
+            width: 100%;
+            max-width: 400px;
+            min-height: 600px;
+            border-radius: 20px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
             display: flex;
-            align-items: flex-end;
-            gap: 2px;
-            height: 20px;
+            flex-direction: column;
+            overflow: hidden;
+            position: relative;
         }
-        
-        .logo-bars div { width: 4px; border-radius: 2px; }
-        .bar-red { height: 12px; background-color: #e91e63; }
-        .bar-blue { height: 16px; background-color: #2196f3; }
-        .bar-yellow { height: 20px; background-color: #ffc107; }
-        
-        .logo-text {
-            font-size: 20px;
-            font-weight: 700;
-            letter-spacing: -0.5px;
-            color: var(--text-main);
+
+        .top-bar {
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 14px;
+            color: #666;
+        }
+
+        .content {
+            padding: 40px 25px;
+            flex-grow: 1;
+        }
+
+        .logo-area {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .logo-area img {
+            height: 24px;
         }
 
         h1 {
-            font-size: 24px;
-            font-weight: 700;
+            font-size: 1.4rem;
+            color: var(--text-color);
+            margin-bottom: 15px;
             line-height: 1.3;
-            margin-top: 0;
-            margin-bottom: 24px;
+            font-weight: 700;
         }
 
         .subtitle {
-            font-size: 15px;
-            color: var(--text-muted);
-            margin-bottom: 24px;
-            line-height: 1.5;
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 25px;
+            line-height: 1.4;
         }
 
-        /* Menti Input Felder */
-        .input-wrapper {
-            position: relative;
-            margin-bottom: 12px;
+        .input-group {
+            margin-bottom: 15px;
         }
 
-        .input-wrapper input {
+        input[type="text"], input[type="date"] {
             width: 100%;
-            height: 52px;
-            padding: 12px 45px 12px 16px;
-            border: 2px solid var(--border-light);
+            padding: 12px 15px;
+            border: 1px solid var(--border-color);
             border-radius: 4px;
-            font-size: 16px;
-            font-family: 'Inter', sans-serif;
-            color: var(--text-main);
+            font-size: 1rem;
+            color: var(--text-color);
             box-sizing: border-box;
-            transition: border-color 0.2s;
-            outline: none;
+            font-family: inherit;
         }
 
-        .input-wrapper input:focus {
-            border-color: var(--menti-blue);
-        }
-
-        .input-wrapper input::placeholder {
-            color: #999;
-        }
-
-        /* Die typische Zeichenbegrenzung am rechten Rand */
-        .char-counter {
-            position: absolute;
-            right: 16px;
-            top: 17px;
-            font-size: 12px;
-            font-weight: 600;
-            color: #a0a0a0;
-        }
-
-        .help-text {
-            text-align: center;
-            font-size: 14px;
-            color: var(--text-muted);
-            margin: 20px 0;
-        }
-
-        .btn {
+        .submit-btn {
             width: 100%;
-            height: 52px;
             background-color: var(--menti-blue);
             color: white;
             border: none;
+            padding: 14px;
             border-radius: 4px;
-            font-size: 16px;
+            font-size: 1rem;
             font-weight: 600;
             cursor: pointer;
-            font-family: 'Inter', sans-serif;
+            margin-top: 20px;
+            box-shadow: 0 4px 6px rgba(18, 97, 254, 0.2);
             transition: background-color 0.2s;
         }
         
-        .btn:hover { background-color: #0b4fe6; }
-        .btn:disabled { background-color: #a0bdfa; cursor: not-allowed; }
-
-        .error-text {
-            color: #d32f2f;
-            font-size: 14px;
-            margin-top: 8px;
-            display: none;
-            font-weight: 600;
+        .submit-btn:hover {
+            background-color: #0e50d6;
         }
 
-        /* Loading Spinner */
-        .spinner-container {
-            display: none;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 60px 0;
-        }
-
+        /* Loading Spinner CSS */
         .spinner {
             width: 40px;
             height: 40px;
@@ -162,55 +116,169 @@
             border-top: 4px solid var(--menti-blue);
             border-radius: 50%;
             animation: spin 1s linear infinite;
+            margin: 0 auto;
         }
 
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Result View Styles */
+        .bar-chart {
+            margin-top: 30px;
+            text-align: left;
+        }
+
+        .bar-container {
+            margin-bottom: 20px;
+        }
+
+        .bar-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .bar-bg {
+            background: #eee;
+            height: 12px;
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        .bar-fill {
+            background: var(--menti-blue);
+            height: 100%;
+            width: 0%;
+            transition: width 1.5s cubic-bezier(0.1, 0.5, 0.5, 1);
+        }
 
         .footer {
-            margin-top: auto;
-            padding-top: 40px;
+            padding: 20px;
+            font-size: 11px;
+            color: #999;
             text-align: center;
-            font-size: 12px;
-            color: var(--text-muted);
+            border-top: 1px solid #eee;
         }
 
-        .footer a {
-            color: var(--menti-blue);
-            text-decoration: none;
-        }
+        .footer a { color: var(--menti-blue); text-decoration: none; }
 
-        /* Bestätigungs-Screen (Nach dem Abstimmen) */
-        .success-icon {
-            font-size: 48px;
-            margin-bottom: 20px;
-            display: block;
+        .error-message {
+            color: #d32f2f;
+            font-size: 0.85rem;
+            margin-top: 5px;
+            display: none;
         }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <div class="logo-container">
-        <div class="logo-bars">
-            <div class="bar-red"></div>
-            <div class="bar-blue"></div>
-            <div class="bar-yellow"></div>
-        </div>
-        <div class="logo-text">Mentimeter</div>
+<div class="phone-mockup">
+    <div class="top-bar">
+        <span>AA</span>
+        <span>menti.com</span>
+        <span>&#8635;</span>
     </div>
 
-    <div id="view-verification">
-        <h1>Sicherheitsprüfung</h1>
-        <p class="subtitle">Bitte bestätige dein Alter, um an dieser Umfrage teilzunehmen.</p>
-        
-        <div class="input-wrapper">
-            <input type="date" id="birthdate" max="2010-01-01">
+    <div class="content" id="main-content">
+        <div class="logo-area">
+            <svg width="120" height="30" viewBox="0 0 120 30">
+                <text x="0" y="22" font-family="Arial Black" font-size="20" fill="#2b3238">Menti</text>
+                <rect x="65" y="5" width="8" height="20" fill="#f44336" />
+                <rect x="75" y="10" width="8" height="15" fill="#2196f3" />
+                <rect x="85" y="2" width="8" height="23" fill="#ffeb3b" />
+            </svg>
         </div>
-        <div class="error-text" id="date-error">Bitte wähle ein gültiges Datum.</div>
-        
-        <button class="btn" onclick="verifyHuman()" style="margin-top: 10px;">Verifizieren</button>
+
+        <div id="verification-view" style="display: block;">
+            <h1>Sicherheitsprüfung</h1>
+            <p class="subtitle">Bitte bestätige, dass du ein Mensch bist, indem du dein Geburtsdatum eingibst.</p>
+            <div class="input-group">
+                <input type="date" id="birthdate">
+                <div class="error-message" id="date-error">Bitte wähle ein Datum aus.</div>
+            </div>
+            <button class="submit-btn" onclick="verifyHuman()">Verifizieren</button>
+        </div>
+
+        <div id="loading-view" style="display: none; text-align: center; padding: 50px 0;">
+            <div class="spinner"></div>
+            <p style="color: #666; margin-top: 20px; font-weight: 500;">Überprüfe Angaben...</p>
+        </div>
+
+        <div id="vote-view" style="display: none;">
+            <h1>Welches Qualität ist bei einem Teammitglied am wichtigsten?</h1>
+            <div class="input-group">
+                <input type="text" placeholder="Eingabe 1">
+            </div>
+            <div class="input-group">
+                <input type="text" placeholder="Eingabe 2">
+            </div>
+            <p style="font-size: 0.8rem; color: #666; text-align: center;">Du kannst mehrere Antworten geben</p>
+            <button class="submit-btn" onclick="showResults()">Submit</button>
+        </div>
+
+        <div id="results-view" style="display: none; text-align: center;">
+            <h1>Ergebnisse</h1>
+            <div class="bar-chart">
+                <div class="bar-container">
+                    <div class="bar-label"><span>Ehrlich</span><span>45%</span></div>
+                    <div class="bar-bg"><div class="bar-fill" id="bar1"></div></div>
+                </div>
+                <div class="bar-container">
+                    <div class="bar-label"><span>Teamfähig</span><span>30%</span></div>
+                    <div class="bar-bg"><div class="bar-fill" id="bar2"></div></div>
+                </div>
+                <div class="bar-container">
+                    <div class="bar-label"><span>Humorvoll</span><span>25%</span></div>
+                    <div class="bar-bg"><div class="bar-fill" id="bar3"></div></div>
+                </div>
+            </div>
+            <p style="margin-top: 40px; color: #666;">Vielen Dank für deine Teilnahme!</p>
+        </div>
     </div>
 
-    <div id="view-loading" class="spinner-container">
-        <div class="spinner"></div>
-        <p style="margin-top: 24px; font-weight: 600;
+    <div class="footer">
+        Create your own Menti at <a href="#">mentimeter.com</a><br>
+        <span style="margin-top: 5px; display: inline-block;">Terms</span>
+    </div>
+</div>
+
+<script>
+    function verifyHuman() {
+        const dateInput = document.getElementById('birthdate').value;
+        const errorMessage = document.getElementById('date-error');
+
+        if (!dateInput) {
+            errorMessage.style.display = 'block';
+        } else {
+            errorMessage.style.display = 'none';
+            
+            // Verstecke Eingabe, zeige Lade-Animation
+            document.getElementById('verification-view').style.display = 'none';
+            document.getElementById('loading-view').style.display = 'block';
+
+            // Warte 1.5 Sekunden (1500 Millisekunden), zeige dann die Umfrage
+            setTimeout(() => {
+                document.getElementById('loading-view').style.display = 'none';
+                document.getElementById('vote-view').style.display = 'block';
+            }, 1500);
+        }
+    }
+
+    function showResults() {
+        document.getElementById('vote-view').style.display = 'none';
+        document.getElementById('results-view').style.display = 'block';
+        
+        setTimeout(() => {
+            document.getElementById('bar1').style.width = '45%';
+            document.getElementById('bar2').style.width = '30%';
+            document.getElementById('bar3').style.width = '25%';
+        }, 300);
+    }
+</script>
+
+</body>
+</html>
