@@ -14,7 +14,7 @@
 
         body {
             font-family: 'Helvetica Neue', Arial, sans-serif;
-            background-color: #0b1435; /* Dunkler Menti-Hintergrund */
+            background-color: #0b1435;
             margin: 0;
             display: flex;
             justify-content: center;
@@ -62,22 +62,31 @@
         h1 {
             font-size: 1.4rem;
             color: var(--text-color);
-            margin-bottom: 25px;
+            margin-bottom: 15px;
             line-height: 1.3;
             font-weight: 700;
+        }
+
+        .subtitle {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 25px;
+            line-height: 1.4;
         }
 
         .input-group {
             margin-bottom: 15px;
         }
 
-        input[type="text"] {
+        input[type="text"], input[type="date"] {
             width: 100%;
             padding: 12px 15px;
             border: 1px solid var(--border-color);
             border-radius: 4px;
             font-size: 1rem;
             color: var(--text-color);
+            box-sizing: border-box;
+            font-family: inherit;
         }
 
         .submit-btn {
@@ -92,11 +101,19 @@
             cursor: pointer;
             margin-top: 20px;
             box-shadow: 0 4px 6px rgba(18, 97, 254, 0.2);
+            transition: background-color 0.2s;
+        }
+        
+        .submit-btn:hover {
+            background-color: #0e50d6;
         }
 
-        /* Result Styles */
-        .results-view {
+        /* View Management */
+        #vote-view, #results-view {
             display: none;
+        }
+
+        #results-view {
             text-align: center;
         }
 
@@ -140,6 +157,13 @@
         }
 
         .footer a { color: var(--menti-blue); text-decoration: none; }
+
+        .error-message {
+            color: #d32f2f;
+            font-size: 0.85rem;
+            margin-top: 5px;
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -161,6 +185,16 @@
             </svg>
         </div>
 
+        <div id="verification-view">
+            <h1>Sicherheitsprüfung</h1>
+            <p class="subtitle">Bitte bestätige, dass du ein Mensch bist, indem du dein Geburtsdatum eingibst.</p>
+            <div class="input-group">
+                <input type="date" id="birthdate">
+                <div class="error-message" id="date-error">Bitte wähle ein Datum aus.</div>
+            </div>
+            <button class="submit-btn" onclick="verifyHuman()">Verifizieren</button>
+        </div>
+
         <div id="vote-view">
             <h1>Welches Qualität ist bei einem Teammitglied am wichtigsten?</h1>
             <div class="input-group">
@@ -173,7 +207,7 @@
             <button class="submit-btn" onclick="showResults()">Submit</button>
         </div>
 
-        <div id="results-view" class="results-view">
+        <div id="results-view">
             <h1>Ergebnisse</h1>
             <div class="bar-chart">
                 <div class="bar-container">
@@ -189,7 +223,7 @@
                     <div class="bar-bg"><div class="bar-fill" id="bar3"></div></div>
                 </div>
             </div>
-            <p style="margin-top: 40px; color: #666;">Vielen Dank!</p>
+            <p style="margin-top: 40px; color: #666;">Vielen Dank für deine Teilnahme!</p>
         </div>
     </div>
 
@@ -200,11 +234,28 @@
 </div>
 
 <script>
+    // Funktion 1: Prüft die Eingabe und wechselt zur Umfrage
+    function verifyHuman() {
+        const dateInput = document.getElementById('birthdate').value;
+        const errorMessage = document.getElementById('date-error');
+
+        if (!dateInput) {
+            // Zeigt einen Fehler an, wenn kein Datum ausgewählt wurde
+            errorMessage.style.display = 'block';
+        } else {
+            // Versteckt die Verifikation und zeigt die Umfrage
+            errorMessage.style.display = 'none';
+            document.getElementById('verification-view').style.display = 'none';
+            document.getElementById('vote-view').style.display = 'block';
+        }
+    }
+
+    // Funktion 2: Zeigt die Ergebnisse nach dem Abstimmen
     function showResults() {
         document.getElementById('vote-view').style.display = 'none';
         document.getElementById('results-view').style.display = 'block';
         
-        // Kleine Verzögerung für den Animationseffekt
+        // Animation der Balken
         setTimeout(() => {
             document.getElementById('bar1').style.width = '45%';
             document.getElementById('bar2').style.width = '30%';
