@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demo Umfrage</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            width: 90%;
+            max-width: 500px;
+            text-align: center;
+        }
+        h1 { color: #333; font-size: 1.5rem; margin-bottom: 1.5rem; }
+        .options { display: flex; flex-direction: column; gap: 10px; }
+        button {
+            padding: 15px;
+            border: 2px solid #007bff;
+            background: white;
+            color: #007bff;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        button:hover { background: #007bff; color: white; }
+        .results { display: none; margin-top: 20px; }
+        .bar {
+            height: 30px;
+            background: #007bff;
+            margin: 10px 0;
+            border-radius: 5px;
+            transition: width 1s ease-in-out;
+            display: flex;
+            align-items: center;
+            padding-left: 10px;
+            color: white;
+            font-size: 0.8rem;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container" id="poll-box">
+    <h1>Welches Feature ist am wichtigsten?</h1>
+    <div class="options" id="options">
+        <button onclick="showResults('Design', '70%')">Design</button>
+        <button onclick="showResults('Funktion', '85%')">Funktion</button>
+        <button onclick="showResults('Geschwindigkeit', '50%')">Geschwindigkeit</button>
+    </div>
+
+    <div class="results" id="results">
+        <h3>Ergebnisse:</h3>
+        <div id="res-list"></div>
+        <p>Vielen Dank für die Teilnahme!</p>
+    </div>
+</div>
+
+<script>
+    function showResults(choice, val) {
+        document.getElementById('options').style.display = 'none';
+        document.getElementById('results').style.display = 'block';
+        
+        const resList = document.getElementById('res-list');
+        const items = [
+            { label: 'Design', p: '65%' },
+            { label: 'Funktion', p: '80%' },
+            { label: 'Geschwindigkeit', p: '55%' }
+        ];
+
+        items.forEach(item => {
+            const bar = document.createElement('div');
+            bar.className = 'bar';
+            bar.style.width = '0%';
+            bar.innerText = item.label + ' (' + item.p + ')';
+            resList.appendChild(bar);
+            setTimeout(() => bar.style.width = item.p, 100);
+        });
+    }
+</script>
+
+</body>
+</html>
