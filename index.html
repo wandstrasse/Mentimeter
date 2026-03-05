@@ -3,91 +3,309 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Demo Umfrage</title>
+    <title>Mentimeter Demo</title>
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f4f7f9;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            margin: 0;
+            padding: 20px;
         }
-        .container {
+
+        .mentimeter-container {
             background: white;
-            padding: 2rem;
-            border-radius: 12px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-            width: 90%;
-            max-width: 500px;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            width: 100%;
+            max-width: 600px;
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px 30px;
             text-align: center;
         }
-        h1 { color: #333; font-size: 1.5rem; margin-bottom: 1.5rem; }
-        .options { display: flex; flex-direction: column; gap: 10px; }
-        button {
-            padding: 15px;
-            border: 2px solid #007bff;
-            background: white;
-            color: #007bff;
-            border-radius: 8px;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: all 0.3s;
+
+        .header h1 {
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            letter-spacing: -0.5px;
         }
-        button:hover { background: #007bff; color: white; }
-        .results { display: none; margin-top: 20px; }
-        .bar {
-            height: 30px;
-            background: #007bff;
-            margin: 10px 0;
-            border-radius: 5px;
-            transition: width 1s ease-in-out;
+
+        .header p {
+            font-size: 1rem;
+            opacity: 0.95;
+            font-weight: 400;
+        }
+
+        .content {
+            padding: 40px 30px;
+        }
+
+        .poll-section {
+            display: block;
+        }
+
+        .poll-section.hidden {
+            display: none;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .option-button {
+            padding: 18px 20px;
+            border: 2px solid #e0e0e0;
+            background: white;
+            color: #333;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: left;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .option-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(102, 126, 234, 0.1), transparent);
+            transition: left 0.5s;
+        }
+
+        .option-button:hover {
+            border-color: #667eea;
+            background: #f8f9ff;
+            transform: translateX(4px);
+        }
+
+        .option-button:active {
+            transform: translateX(2px);
+        }
+
+        .results-section {
+            display: block;
+        }
+
+        .results-section.hidden {
+            display: none;
+        }
+
+        .results-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .result-item {
+            margin-bottom: 25px;
+            animation: slideIn 0.5s ease-out forwards;
+            opacity: 0;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .result-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: #333;
+        }
+
+        .result-percentage {
+            color: #667eea;
+            font-weight: 600;
+        }
+
+        .result-bar-container {
+            background: #f0f0f0;
+            border-radius: 8px;
+            height: 36px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .result-bar {
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            height: 100%;
+            border-radius: 8px;
+            width: 0%;
             display: flex;
             align-items: center;
-            padding-left: 10px;
+            padding: 0 12px;
             color: white;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: width 1s cubic-bezier(0.34, 1.56, 0.64, 1);
+            white-space: nowrap;
+        }
+
+        .thank-you {
+            text-align: center;
+            color: #666;
+            font-size: 1.1rem;
+            margin-top: 30px;
+            font-weight: 500;
+        }
+
+        .answer-count {
+            text-align: center;
+            color: #999;
+            font-size: 0.9rem;
+            margin-top: 15px;
+            font-weight: 400;
+        }
+
+        .logo {
+            text-align: center;
             font-size: 0.8rem;
+            color: #999;
+            margin-top: 20px;
+        }
+
+        @media (max-width: 600px) {
+            .header h1 {
+                font-size: 1.5rem;
+            }
+
+            .option-button {
+                font-size: 1rem;
+                padding: 16px 18px;
+            }
+
+            .content {
+                padding: 30px 20px;
+            }
         }
     </style>
 </head>
 <body>
 
-<div class="container" id="poll-box">
-    <h1>Welches Feature ist am wichtigsten?</h1>
-    <div class="options" id="options">
-        <button onclick="showResults('Design', '70%')">Design</button>
-        <button onclick="showResults('Funktion', '85%')">Funktion</button>
-        <button onclick="showResults('Geschwindigkeit', '50%')">Geschwindigkeit</button>
+<div class="mentimeter-container">
+    <div class="header">
+        <h1>Welches Feature ist am wichtigsten?</h1>
+        <p>Bitte wählen Sie eine Option</p>
     </div>
 
-    <div class="results" id="results">
-        <h3>Ergebnisse:</h3>
-        <div id="res-list"></div>
-        <p>Vielen Dank für die Teilnahme!</p>
+    <div class="content">
+        <!-- Poll Section -->
+        <div class="poll-section" id="pollSection">
+            <div class="options">
+                <button class="option-button" onclick="submitVote('Design')">Design</button>
+                <button class="option-button" onclick="submitVote('Funktion')">Funktion</button>
+                <button class="option-button" onclick="submitVote('Geschwindigkeit')">Geschwindigkeit</button>
+            </div>
+        </div>
+
+        <!-- Results Section -->
+        <div class="results-section hidden" id="resultsSection">
+            <div class="results-title">Ergebnisse</div>
+            
+            <div id="resultsList"></div>
+
+            <div class="thank-you">Vielen Dank für Ihre Teilnahme!</div>
+            <div class="answer-count" id="answerCount">1 Antwort</div>
+        </div>
+    </div>
+
+    <div class="logo">
+        Powered by Mentimeter
     </div>
 </div>
 
 <script>
-    function showResults(choice, val) {
-        document.getElementById('options').style.display = 'none';
-        document.getElementById('results').style.display = 'block';
-        
-        const resList = document.getElementById('res-list');
+    const results = {
+        'Design': 65,
+        'Funktion': 80,
+        'Geschwindigkeit': 55
+    };
+
+    let totalAnswers = 0;
+
+    function submitVote(choice) {
+        // Hide poll, show results
+        document.getElementById('pollSection').classList.add('hidden');
+        document.getElementById('resultsSection').classList.remove('hidden');
+
+        // Calculate total
+        totalAnswers = Object.values(results).reduce((a, b) => a + b, 0);
+
+        // Render results
+        renderResults();
+    }
+
+    function renderResults() {
+        const resultsList = document.getElementById('resultsList');
+        resultsList.innerHTML = '';
+
         const items = [
-            { label: 'Design', p: '65%' },
-            { label: 'Funktion', p: '80%' },
-            { label: 'Geschwindigkeit', p: '55%' }
+            { label: 'Design', votes: results['Design'] },
+            { label: 'Funktion', votes: results['Funktion'] },
+            { label: 'Geschwindigkeit', votes: results['Geschwindigkeit'] }
         ];
 
-        items.forEach(item => {
-            const bar = document.createElement('div');
-            bar.className = 'bar';
-            bar.style.width = '0%';
-            bar.innerText = item.label + ' (' + item.p + ')';
-            resList.appendChild(bar);
-            setTimeout(() => bar.style.width = item.p, 100);
+        items.forEach((item, index) => {
+            const percentage = Math.round((item.votes / totalAnswers) * 100);
+            
+            const resultItem = document.createElement('div');
+            resultItem.className = 'result-item';
+            resultItem.style.animationDelay = `${index * 0.1}s`;
+            
+            resultItem.innerHTML = `
+                <div class="result-label">
+                    <span>${item.label}</span>
+                    <span class="result-percentage">${percentage}%</span>
+                </div>
+                <div class="result-bar-container">
+                    <div class="result-bar" style="width: 0%;" data-width="${percentage}%"></div>
+                </div>
+            `;
+            
+            resultsList.appendChild(resultItem);
+
+            // Animate bar after a short delay
+            setTimeout(() => {
+                resultItem.querySelector('.result-bar').style.width = percentage + '%';
+            }, 100 + index * 100);
         });
+
+        // Update answer count
+        document.getElementById('answerCount').textContent = 
+            totalAnswers + (totalAnswers === 1 ? ' Antwort' : ' Antworten');
     }
 </script>
 
