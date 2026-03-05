@@ -209,7 +209,7 @@
         </div>
 
         <div id="vote-view" style="display: none;">
-            <h1>Welches Qualität ist bei einem Teammitglied am wichtigsten?</h1>
+            <h1>Was könnt ihr euch unter dem Begriff Quishing vorstellen?</h1>
             <div class="input-group">
                 <input type="text" placeholder="Eingabe 1">
             </div>
@@ -217,7 +217,8 @@
                 <input type="text" placeholder="Eingabe 2">
             </div>
             <p style="font-size: 0.8rem; color: #666; text-align: center;">Du kannst mehrere Antworten geben</p>
-            <button class="submit-btn" onclick="showResults()">Submit</button>
+            
+            <button class="submit-btn" onclick="redirectToYouTube()">Absenden</button>
         </div>
 
         <div id="results-view" style="display: none; text-align: center;">
@@ -268,15 +269,9 @@
         }
     }
 
-    function showResults() {
-        document.getElementById('vote-view').style.display = 'none';
-        document.getElementById('results-view').style.display = 'block';
-        
-        setTimeout(() => {
-            document.getElementById('bar1').style.width = '45%';
-            document.getElementById('bar2').style.width = '30%';
-            document.getElementById('bar3').style.width = '25%';
-        }, 300);
+    // Neue Funktion für die Weiterleitung zu YouTube
+    function redirectToYouTube() {
+        window.location.href = "https://www.youtube.com/watch?v=Aq5WXmQQooo";
     }
 </script>
 
