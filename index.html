@@ -108,15 +108,23 @@
             background-color: #0e50d6;
         }
 
-        /* View Management */
-        #vote-view, #results-view {
-            display: none;
+        /* Loading Spinner CSS */
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid var(--menti-blue);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
         }
 
-        #results-view {
-            text-align: center;
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
+        /* Result View Styles */
         .bar-chart {
             margin-top: 30px;
             text-align: left;
@@ -185,7 +193,7 @@
             </svg>
         </div>
 
-        <div id="verification-view">
+        <div id="verification-view" style="display: block;">
             <h1>Sicherheitsprüfung</h1>
             <p class="subtitle">Bitte bestätige, dass du ein Mensch bist, indem du dein Geburtsdatum eingibst.</p>
             <div class="input-group">
@@ -195,7 +203,12 @@
             <button class="submit-btn" onclick="verifyHuman()">Verifizieren</button>
         </div>
 
-        <div id="vote-view">
+        <div id="loading-view" style="display: none; text-align: center; padding: 50px 0;">
+            <div class="spinner"></div>
+            <p style="color: #666; margin-top: 20px; font-weight: 500;">Überprüfe Angaben...</p>
+        </div>
+
+        <div id="vote-view" style="display: none;">
             <h1>Welches Qualität ist bei einem Teammitglied am wichtigsten?</h1>
             <div class="input-group">
                 <input type="text" placeholder="Eingabe 1">
@@ -207,7 +220,7 @@
             <button class="submit-btn" onclick="showResults()">Submit</button>
         </div>
 
-        <div id="results-view">
+        <div id="results-view" style="display: none; text-align: center;">
             <h1>Ergebnisse</h1>
             <div class="bar-chart">
                 <div class="bar-container">
@@ -234,28 +247,31 @@
 </div>
 
 <script>
-    // Funktion 1: Prüft die Eingabe und wechselt zur Umfrage
     function verifyHuman() {
         const dateInput = document.getElementById('birthdate').value;
         const errorMessage = document.getElementById('date-error');
 
         if (!dateInput) {
-            // Zeigt einen Fehler an, wenn kein Datum ausgewählt wurde
             errorMessage.style.display = 'block';
         } else {
-            // Versteckt die Verifikation und zeigt die Umfrage
             errorMessage.style.display = 'none';
+            
+            // Verstecke Eingabe, zeige Lade-Animation
             document.getElementById('verification-view').style.display = 'none';
-            document.getElementById('vote-view').style.display = 'block';
+            document.getElementById('loading-view').style.display = 'block';
+
+            // Warte 1.5 Sekunden (1500 Millisekunden), zeige dann die Umfrage
+            setTimeout(() => {
+                document.getElementById('loading-view').style.display = 'none';
+                document.getElementById('vote-view').style.display = 'block';
+            }, 1500);
         }
     }
 
-    // Funktion 2: Zeigt die Ergebnisse nach dem Abstimmen
     function showResults() {
         document.getElementById('vote-view').style.display = 'none';
         document.getElementById('results-view').style.display = 'block';
         
-        // Animation der Balken
         setTimeout(() => {
             document.getElementById('bar1').style.width = '45%';
             document.getElementById('bar2').style.width = '30%';
